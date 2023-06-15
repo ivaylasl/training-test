@@ -1,0 +1,621 @@
+{
+	"info": {
+		"_postman_id": "e858c3d7-bf10-4a1f-8756-91b1b8c66ce8",
+		"name": "Simple Books API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26955899"
+	},
+	"item": [
+		{
+			"name": "Get Fiction Book List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for GET request is 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test (\"Request has a JSON body\", function(){",
+							"    pm.response.to.have.jsonBody",
+							"})",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test (\"To check if all books of this list are of type fiction\", function(){",
+							"    pm.expect(response[0].type).to.eql(\"fiction\")",
+							"    pm.expect(response[1].type).to.eql(\"fiction\")",
+							"    pm.expect(response[2].type).to.eql(\"fiction\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books?type=fiction",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "fiction"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Non-Fiction Book List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for GET request is 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test (\"Request has a JSON body\", function(){",
+							"    pm.response.to.have.jsonBody",
+							"})",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test (\"To check if all books of this list are of type fiction\", function(){",
+							"    pm.expect(response[0].type).to.eql(\"non-fiction\")",
+							"    pm.expect(response[1].type).to.eql(\"non-fiction\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books?type=non-fiction",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "non-fiction"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single Book Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for GET request is 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test (\"Request has a JSON body\", function(){",
+							"    pm.response.to.have.body",
+							"})",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test (\"To check if the book id is 3\", function(){",
+							"    pm.expect(response.id).to.eql(3)",
+							"})",
+							"",
+							"pm.test (\"To check if the book with id 3 is named The Vanishing Half\", function(){",
+							"    pm.expect(response.name).to.eql(\"The Vanishing Half\")",
+							"})",
+							"",
+							"pm.test (\"To check if the book with id 3 has Brit Bennett as the author\", function(){",
+							"    pm.expect(response.author).to.eql(\"Brit Bennett\")",
+							"})",
+							"",
+							"pm.test (\"To check if the book is available\", function(){",
+							"    pm.expect(response.available).to.eql(true)",
+							"})",
+							"",
+							"",
+							"pm.test(\"To check if the book's current-stock is 987\", function() {",
+							"    pm.expect(pm.response.json()['current-stock']).to.eql(987);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books/:bookid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						":bookid"
+					],
+					"variable": [
+						{
+							"key": "bookid",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Available Book List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books?available=false",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "available",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for POST request is 201\", function(){",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test (\"Request response has accessToken in the json body\", function(){",
+							"    pm.response.to.have.jsonBody(\"accessToken\")",
+							"})",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.globals.set(\"accessToken\", pm.response.json().accessToken)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"clientName\": \"{{$randomUserName}}\",\n   \"clientEmail\": \"{{$randomEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api-clients/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api-clients",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for POST request is 201\", function(){",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test (\"Request response has orderID in the json body\", function(){",
+							"    pm.response.to.have.jsonBody(\"orderId\")",
+							"})",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test (\"To check if the new order has created key with value true\", function(){",
+							"    pm.expect(response.created).to.eql(true)",
+							"})",
+							"",
+							"pm.test(\"To check if the orderId key has been created\", function(){",
+							"    pm.expect(response.orderId).to.exist",
+							"})",
+							"",
+							"pm.test(\"To check if orderId has a string value\", function(){",
+							"    pm.expect(response.orderId).to.have.string",
+							"})",
+							"",
+							"pm.globals.set(\"orderId\", pm.response.json().orderId)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"bookId\": 1,\n  \"customerName\": \"John\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for PATCH request is 204\", function(){",
+							"    pm.response.to.have.status(204)",
+							"})",
+							"",
+							"//check if the response body is empty",
+							"pm.test (\"Request has an empty JSON body\", function(){",
+							"    pm.response.to.have.jsonBody(null)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerName\": \"New John\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/:orderId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for GET request is 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test (\"Request has a JSON body with bookID\", function(){",
+							"    pm.response.to.have.jsonBody(\"bookId\")",
+							"})",
+							"",
+							"//check if the response body is empty",
+							"pm.test (\"Request has an empty JSON body\", function(){",
+							"    pm.response.to.have.jsonBody(null)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/:orderId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for POST request is 201\", function(){",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test (\"Request response has accessToken in the json body\", function(){",
+							"    pm.response.to.have.jsonBody(\"accessToken\")",
+							"})",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test (\"Request response to have accessToken with a string value\", function(){",
+							"    pm.expect(response.accessToken).to.have.string",
+							"})",
+							"",
+							"pm.globals.set(\"accessToken\", pm.response.json().accessToken)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"clientName\": \"{{$randomUserName}}\",\n   \"clientEmail\": \"{{$randomEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api-clients/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api-clients",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for POST request is 201\", function(){",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test (\"Request response has orderID in the json body\", function(){",
+							"    pm.response.to.have.jsonBody(\"orderId\")",
+							"})",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test(\"Created key to have value true\", function(){",
+							"    pm.expect(response.created).to.be.true",
+							"})",
+							"",
+							"pm.test(\"Request response body to have orderId key with a string value\", function(){",
+							"    pm.expect(response.orderId).to.have.string",
+							"})",
+							"",
+							"pm.globals.set(\"orderId\", pm.response.json().orderId)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"bookId\": 3,\n  \"customerName\": \"Bobby\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete New Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test (\"Status Code for POST request is 204 on initial request run\", function(){",
+							"    pm.response.to.have.status(204)",
+							"})",
+							"",
+							"pm.test (\"Status Code for POST request is 404 on every following request run\", function(){",
+							"    pm.response.to.have.status(404)",
+							"})",
+							"",
+							"pm.test (\"Request body has error\", function(){",
+							"    pm.response.to.be.error",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/:orderId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
